@@ -1,6 +1,7 @@
 package application;
 
 public class Employee {
+	static int numberOfEmployees = 0;
 	final Department dept;
 
 	String firstName;
@@ -12,6 +13,7 @@ public class Employee {
 		this.lastName = lastName;
 		this.id = id;
 		this.dept = dept;
+		numberOfEmployees++; // increase employee count
 	}
 
 
@@ -20,13 +22,15 @@ public class Employee {
 		this.lastName = "Mustermann";
 		this.id = id;
 		this.dept = new Department();
+		numberOfEmployees++; // increase employee count
 	}
 
 	public Employee() {
 		this.firstName = "Max";
 		this.lastName = "Mustermann";
-		this.id = 123;
+		this.id = 1234;
 		this.dept = new Department();
+		numberOfEmployees++; // increase employee count
 	}
 
 	public void print() {

@@ -1,11 +1,9 @@
 package application;
 
 public class Department {
-	/*
-	 *
-	 * Your code comes here. Remember you can overload constructors.
-	 *
-	 */
+	static int numberOfDepartments = 0;
+
+
 	String name;
 	int id;
 	String country;
@@ -16,6 +14,7 @@ public class Department {
 		this.id = id;
 		this.country = country;
 		this.city = city;
+		numberOfDepartments++;
 	}
 
 	public Department() {
@@ -23,6 +22,7 @@ public class Department {
 		id = 123;
 		country = "Neverland";
 		city = "Gotham";
+		numberOfDepartments++;
 	}
 
 
