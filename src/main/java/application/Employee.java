@@ -16,17 +16,17 @@ public class Employee {
 
 
 	public Employee(int id) {
-		firstName = "Max";
-		lastName = "Mustermann";
+		this.firstName = "Max";
+		this.lastName = "Mustermann";
 		this.id = id;
-		dept = new Department();
+		this.dept = new Department();
 	}
 
 	public Employee() {
-		firstName = "Max";
-		lastName = "Mustermann";
-		id = 123;
-		dept = new Department();
+		this.firstName = "Max";
+		this.lastName = "Mustermann";
+		this.id = 123;
+		this.dept = new Department();
 	}
 
 	public void print() {
