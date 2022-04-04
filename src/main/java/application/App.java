@@ -15,12 +15,7 @@ public class App {
 
     // ------ static variables end ------
 
-
-    public static void main(String[] args) {
-        application(); // launch interface application
-    }
-
-    private static void application() {
+    public static void application() {
         Department department = null;
 
         System.out.println("Wollen Sie eine Abteilung anlegen? (j für ja / n für nein)");
