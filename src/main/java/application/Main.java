@@ -1,8 +1,9 @@
 package application;
 
-public class Main {
+import static application.App.application;
 
+public class Main {
 	public static void main(String[] args) {
-		System.out.println("Hello Exercise World 😁");
+		application(); // launch interface application
 	}
 }

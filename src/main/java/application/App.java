@@ -1,21 +1,165 @@
 package application;
 
+import java.util.Random;
+import java.util.Scanner;
+
 public class App {
-	public static void main(String[] args) {
+    // ------ static variables start ------
 
-	}
+    static int numberOfIds = 0;
+    static Scanner scanner = new Scanner(System.in); // initialise Scanner for input
+    static Random rand = new Random();
+    static int[] ids = new int[1]; // generate array containing created IDs
+    static Department[] departments = new Department[1]; // generate array containing departments
+    static Employee[] employees = new Employee[1]; // generate array containing employees
 
-	/*
-	 * for the bonus task
-	 *
-	 * private static int generateID() {}
-	 *
-	 */
+    // ------ static variables end ------
 
-	/*
-	 * for the console application
-	 *
-	 * private static void application() {}
-	 *
-	 */
+    public static void application() {
+        Department department = null;
+
+        System.out.println("Wollen Sie eine Abteilung anlegen? (j für ja / n für nein)");
+        String departmentCreation = scanner.nextLine();
+
+        if (departmentCreation.equalsIgnoreCase("j")) {
+            department = createDepartment();
+        } else {
+            if (departments[0] == null) {
+                System.out.println("Keine Abteilungen gefunden! Testabteilung wurde angelegt.");
+                departments[0] = new Department();
+                department = departments[0];
+            } else {
+                System.out.println("Für welche Abteilung wollen Sie den Mitarbeiter anlegen?");
+
+                for (int i = 0; i < departments.length; i++) {
+                    if (departments[i] != null) {
+                        System.out.println((i + 1) + ") " + departments[i].name);
+                    } else {
+                        break;
+                    }
+                }
+                int departmentSelection = scanner.nextInt();
+                department = departments[departmentSelection - 1];
+            }
+        }
+
+        createEmployee(department);
+
+        repeatQuestion();
+    }
+
+    public static void generateId() {
+        if (numberOfIds >= ids.length) { // check if ID array needs to be extended
+            increaseIdArray();
+        }
+
+        int id = rand.nextInt(10000) + 1000;
+
+        // ----- check if generated ID already exists
+        for (int i = 0; i < ids.length; i++) {
+            if (ids[i] == id) {
+                generateId(); //restart generation, if generated ID already exists
+            }
+        }
+
+        ids[numberOfIds] = id; //write new ID to ID-Array
+        numberOfIds++; // increase ID counter
+    }
+
+    private static Department createDepartment() {
+        // ----- input department information
+        System.out.println("Bitte legen Sie eine Abteilung an:" + "\n");
+        System.out.print("Name ");
+        String departmentName = scanner.nextLine();
+        System.out.print("Land ");
+        String departmentCountry = scanner.nextLine();
+        System.out.print("Stadt ");
+        String departmentCity = scanner.nextLine();
+
+        // ----- create department object
+        generateId();
+        Department department = new Department(departmentName, ids[(numberOfIds - 1)], departmentCountry, departmentCity);
+        if (Department.numberOfDepartments >= departments.length) {
+            increaseDepartmentsArray();
+        }
+        departments[Department.numberOfDepartments - 1] = department;
+        return department;
+    }
+
+    private static void createEmployee(Department department) {
+        // ----- input employee information
+        System.out.println("\n" + "Bitte legen Sie einen Mitarbeiter an:" + "\n");
+        System.out.print("Vorname ");
+        String firstName = scanner.nextLine();
+        System.out.print("Nachname ");
+        String lastName = scanner.nextLine();
+
+
+        // ----- create employee object
+        generateId();
+        Employee employee = new Employee(firstName, lastName, ids[(numberOfIds - 1)], department);
+
+        // ----- check if employee array needs to be extended
+        if (Employee.numberOfEmployees >= employees.length) {
+            increaseEmployeeArray();
+        }
+
+        // ----- write employee object to employee array
+        employees[Employee.numberOfEmployees - 1] = employee;
+
+        System.out.println("\n" + "Sie haben folgenden Mitarbeiter angelegt:");
+        employee.print(); // print line to show created employee information
+    }
+
+    private static void increaseIdArray() {
+        int[] idsNew = new int[2 * ids.length]; // create new array with double size of previous array
+        for (int i = 0; i < ids.length; i++) { // copy data from old array to new array
+            idsNew[i] = ids[i];
+        }
+        ids = idsNew; // return new array
+    }
+
+    private static void increaseDepartmentsArray() {
+        Department[] departmentsNew = new Department[2 * departments.length]; // create new array with double size of previous array
+        for (int i = 0; i < departments.length; i++) { // copy data from old array to new array
+            departmentsNew[i] = departments[i];
+        }
+        departments = departmentsNew; // return new array
+    }
+
+    private static void increaseEmployeeArray() {
+        Employee[] employeesNew = new Employee[2 * employees.length]; // create new array with double size of previous array
+        for (int i = 0; i < employees.length; i++) { // copy data from old array to new array
+            employeesNew[i] = employees[i];
+        }
+        employees = employeesNew; // return new array
+    }
+
+    private static void printEmployees() {
+        for (int i = 0; i < employees.length; i++) { // iterate through all employee entries of employee array
+            if (employees[i] != null) { // only output employee object if entry contains data
+                employees[i].print();
+            } else { // break loop after reaching last entry
+                break;
+            }
+        }
+    }
+
+
+    private static void repeatQuestion() {
+        System.out.println("\n" + "Möchten Sie noch einen Mitarbeiter anlegen?");
+        System.out.println("j für ja und n für beenden");
+        String repeat = scanner.nextLine();
+
+        if (repeat.equalsIgnoreCase("j")) { // repeat employee entry
+            System.out.println();
+            application();
+        } else if (repeat.equalsIgnoreCase("n")) { // quit application
+            printEmployees();
+            System.out.println("\n" + "Auf Wiedersehen!");
+        } else { // wrong input
+            System.out.println("\n" + "Ungültige Eingabe.");
+            repeatQuestion();
+        }
+    }
 }
